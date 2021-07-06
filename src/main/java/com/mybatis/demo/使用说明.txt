@@ -1,0 +1,35 @@
+使用步骤
+1、sql语句全部写在resources/mybatis/mapper/sqlMapper.xml
+2、写好一个sql语句后，在com.mybatis.demo.constant.sqlConstant里面配置相应的方法名称
+3、通常情况下，不需要写过多的service层代码，如果业务实在复杂，需要额外写的，请写在com.mybatis.demo.service.IBuniessService里面
+4、编写相应的controller层的代码
+
+注意的事项：
+1、如果不需要项目启动时，就立即加载模块代码，那么请注释掉'com.mybatis.demo.util.ApplicationRunnerImpl' 里面的代码，否则项目不能正常启动;
+2、数据库配置在'resources/db/db.properties'文件中，其中‘jarLocation’为数据库连接jar文件(用于代码生成)，环境不同需要更换jar位置;
+3、代码生成需要注意的地方：
+    1、在pom.xml 中必须添加:org.mybatis、org.mybatis.spring.boot、mysql(oracle)以及在<build></build>之间需要添加org.mybatis.generator插件;
+    2、代码生成器的配置文件为:generatorConfig.xml,通常情况需要修改的地方有：<javaModelGenerator targetPackage="实体的包名"></javaModelGenerator>;
+    <table tableName="数据库表名" domainObjectName="对应生成实体的class名称"></table>
+    3、在pom.xml里添加了相应的依赖和插件的前提下，在右侧点击'maven/Plugins/mybatis-generator'这个目录下的‘mybatis-generator:generate’
+    4、正常生成实体类
+
+4、项目包情况说明：
+    1、com.mybatis.demo.comMybatis 里面配置相应的mybatis信息，包括获取dataSource、sessionFactory等;
+    2、com.mybatis.demo.constant 里面配置相应的常量变量，包括具体的sql唯一标识、ComMapper扫描包路径
+    3、com.mybatis.demo.controller 控制器代码
+    4、com.mybatis.demo.dao 连接数据库最基本的方法，包括查询所有数据、增加、删除、修改等方法
+    5、com.mybatis.demo.entity 具体实体包名
+    6、com.mybatis.demo.load 程序刚启动时，会自动调用的代码
+    7、com.mybatis.demo.mapper 这个包是mapper.xml对应的mapper类文件，通常情况禁止删除里面的代码
+    8、com.mybatis.demo.redis 这个包主要用于处理redis序列化问题
+    9、com.mybatis.demo.service 这个包是业务处代码，禁止修改‘com.mybatis.demo.service.comm’这个目录下的代码，
+       需要拓展业务代码，请写在‘com.mybatis.demo.service.IBuniessService’里面;
+    10、com.mybatis.demo.util 这个包，里面包括 项目启动类(ApplicationRunnerImpl)、手机端跨域类(CrossDomainConfig)、实体与Map之间相互转换的类(MapConvertBean)
+    11、com.mybatis.demo 这个目录下的DemoApplication类为程序主程序，@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})加载外配置文件时需要添加;
+5、配置文件说明：
+    1、resources/db 这个目录为数据库连接信息
+    2、resources/mybatis 这个目录主要配置一些mybatis配置信息，通常情况下只需要往sqlMapper.xml里面写sql语句即可,其他文件通常情况下不需要修改;
+    3、resources/application.yml 主配置文件
+    4、resources/generatorConfig.xml 代码生成器文件
+    5、resources/log4j.properties 日志文件
