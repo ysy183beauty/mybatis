@@ -1,6 +1,4 @@
 package com.mybatis.demo.controller;
-
-import com.mybatis.demo.comMybatis.OperMybatis;
 import com.mybatis.demo.constant.sqlConstant;
 import com.mybatis.demo.entity.Student;
 import com.mybatis.demo.service.comm.IComService;
@@ -17,13 +15,10 @@ import java.util.Map;
 public class ExampleController {
     @Autowired
     private IComService iComService;
-    @Autowired
-    private OperMybatis operMybatis;
     @RequestMapping("/helloMybatis")
     public List helloMybatis(HttpServletRequest request) throws Exception {
         Map pars = new HashMap< String,Object>();
-        String sql =operMybatis.getSql(sqlConstant.SELECT1,pars);
-        List list = iComService.selectList(sql);
+        List list = iComService.selectList(sqlConstant.SELECT1,pars);
         //转换数据信息
         List<Student> students= MapConvertBean.getInstance().parse(list,Student.class);
         return students;
@@ -36,8 +31,7 @@ public class ExampleController {
         student.setAddress("曲靖");
         //实体转换为map
         Map<String, Object> params = MapConvertBean.getInstance().objectToMap(student);
-        String sql =operMybatis.getSql(sqlConstant.SELECT2,params);
-        List list = iComService.selectList(sql);
+        List list = iComService.selectList(sqlConstant.SELECT2,params);
         //转换数据信息
         List<Student> students= MapConvertBean.getInstance().parse(list,Student.class);
         return students;
@@ -49,8 +43,7 @@ public class ExampleController {
         pars.put("name","杨涛");
         pars.put("age",100);
         pars.put("address","云南大理");
-        String sql =operMybatis.getSql(sqlConstant.ADD1,pars);
-        iComService.insertObj(sql);
+        iComService.insertObj(sqlConstant.ADD1,pars);
     }
 
     @RequestMapping("/add1")
@@ -61,8 +54,7 @@ public class ExampleController {
         student.setAge(30);
         //实体转换为map
         Map<String, Object> params = MapConvertBean.getInstance().objectToMap(student);
-        String sql =operMybatis.getSql(sqlConstant.ADD1,params);
-        iComService.insertObj(sql);
+        iComService.insertObj(sqlConstant.ADD1,params);
     }
 
     @RequestMapping("/update")
@@ -70,23 +62,20 @@ public class ExampleController {
         Map pars = new HashMap< String,Object>();
         pars.put("id",2);
         pars.put("age",20);
-        String sql =operMybatis.getSql(sqlConstant.UPDATE1,pars);
-        iComService.updateObj(sql);
+        iComService.updateObj(sqlConstant.UPDATE1,pars);
     }
 
     @RequestMapping("/del")
     public void del(HttpServletRequest request) throws Exception {
         Map pars = new HashMap< String,Object>();
         pars.put("id",2);
-        String sql =operMybatis.getSql(sqlConstant.DEL1,pars);
-        iComService.delObj(sql);
+        iComService.delObj(sqlConstant.DEL1,pars);
     }
 
     @RequestMapping("/selectOne")
     public String selectOne(HttpServletRequest request) throws Exception {
         Map pars = new HashMap< String,Object>();
-        String sql =operMybatis.getSql(sqlConstant.SELECTOne,pars);
-        String result= iComService.selectSingle(sql);
+        String result= iComService.selectSingle(sqlConstant.SELECTOne,pars);
         return result;
     }
 
